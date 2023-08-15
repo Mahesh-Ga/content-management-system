@@ -1,0 +1,26 @@
+CREATE TABLE Users(
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(30) ,
+    last_name VARCHAR(30),
+    email VARCHAR(50) UNIQUE,
+    password VARCHAR(50),
+    mobile VARCHAR(20)
+);
+
+CREATE TABLE Quotes(
+    quote_id INT PRIMARY KEY AUTO_INCREMENT,
+    text VARCHAR(500),
+    author VARCHAR(50),
+    user_id INT REFERENCES Users.user_id 
+);
+
+CREATE TABLE FavoriteQuotes(
+   user_id INT REFERENCES Users.user_id,
+   quote_id INT REFERENCES Quotes.quote_id,
+   UNIQUE(user_id, quote_id)
+);
+
+ALTER TABLE FavoriteQuotes
+ADD CONSTRAINT UNIQUE(user_id, quote_id);
+
+SELECT * FROM FavoriteQuotes, Quotes Where FavoriteQuotes.quote_id = Quotes.quote_id and  FavoriteQuotes.user_id = ${request.body.id};
